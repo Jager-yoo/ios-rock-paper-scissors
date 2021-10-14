@@ -139,7 +139,7 @@ func runProgram() {
             print(gameResult)
             runProgram()
         case .win(let player):
-            print(player)
+            print(gameResult)
             try runMukChiBa(whoseTurn: player)
         }
     } catch GameError.invalidInput {
