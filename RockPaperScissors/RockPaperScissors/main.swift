@@ -1,6 +1,6 @@
 //
 //  RockPaperScissors - main.swift
-//  Created by yagom. 
+//  Created by yagom.
 //  Copyright © yagom academy. All rights reserved.
 //
 
@@ -24,30 +24,29 @@ enum GameResult: CustomStringConvertible {
         switch self {
         case .draw:
             return Message.draw
-        case .userWin:
+        case .win(.user):
             return Message.userWin
-        case .computerWin:
+        case .win(.computer):
             return Message.computerWin
         }
     }
     
     case draw
-    case userWin
-    case computerWin
+    case win(Player)
 }
 
-enum WhoseTurn: CustomStringConvertible {
+enum Player: CustomStringConvertible {
     var description: String {
         switch self {
-        case .userTurn:
+        case .user:
             return Message.userTurn
-        case .computerTurn:
+        case .computer:
             return Message.computerTurn
         }
     }
     
-    case userTurn
-    case computerTurn
+    case user
+    case computer
 }
 
 enum GameError: Error, CustomStringConvertible {
@@ -118,9 +117,9 @@ func judgeGameResult(_ input: ExpectedHand) -> GameResult {
     if computerHand == input {
         return .draw
     } else if computerHand < input {
-        return .userWin
+        return .win(.user)
     } else {
-        return .computerWin
+        return .win(.computer)
     }
 }
 
@@ -139,12 +138,9 @@ func runProgram() {
         case .draw:
             print(gameResult)
             runProgram()
-        case .userWin:
-            print(gameResult)
-            try runMukChiBa(.userTurn)
-        case .computerWin:
-            print(gameResult)
-            try runMukChiBa(.computerTurn)
+        case .win(let player):
+            print(player)
+            try runMukChiBa(whoseTurn: player)
         }
     } catch GameError.invalidInput {
         print(GameError.invalidInput)
@@ -154,11 +150,11 @@ func runProgram() {
     }
 }
 
-func runMukChiBa(_ whoseTurn: WhoseTurn) throws {
+func runMukChiBa(whoseTurn: Player) throws {
     switch whoseTurn {
-    case .userTurn:
+    case .user:
         print(Message.menuUserTurn, terminator: "")
-    case .computerTurn:
+    case .computer:
         print(Message.menuComputerTurn, terminator: "")
     }
     
@@ -171,24 +167,21 @@ func runMukChiBa(_ whoseTurn: WhoseTurn) throws {
         let gameResult = judgeGameResult(mukChiBaInput)
         
         switch gameResult {
-        case .draw where whoseTurn == .userTurn:
+        case .draw where whoseTurn == .user:
             print(Message.userFinalWin)
             print(Message.exit)
-        case .draw where whoseTurn == .computerTurn:
+        case .draw where whoseTurn == .computer:
             print(Message.computerFinalWin)
             print(Message.exit)
-        case .userWin:
-            print(WhoseTurn.userTurn)
-            try runMukChiBa(.userTurn)
-        case .computerWin:
-            print(WhoseTurn.computerTurn)
-            try runMukChiBa(.computerTurn)
+        case .win(let player):
+            print(gameResult)
+            try runMukChiBa(whoseTurn: player)
         case .draw:
             fatalError()
         }
     } catch GameError.invalidInput {
         print(GameError.invalidInput)
-        try runMukChiBa(.computerTurn)
+        try runMukChiBa(whoseTurn: .computer)
     }
 }
 
