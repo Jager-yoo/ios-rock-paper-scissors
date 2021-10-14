@@ -138,9 +138,9 @@ func runProgram() {
         case .draw:
             print(gameResult)
             runProgram()
-        case .win(let player):
+        case .win(let winner):
             print(gameResult)
-            try runMukChiBa(whoseTurn: player)
+            try runMukChiBa(whoseTurn: winner)
         }
     } catch GameError.invalidInput {
         print(GameError.invalidInput)
@@ -173,9 +173,9 @@ func runMukChiBa(whoseTurn: Player) throws {
         case .draw where whoseTurn == .computer:
             print(Message.computerFinalWin)
             print(Message.exit)
-        case .win(let player):
-            print(player.turnMessage)
-            try runMukChiBa(whoseTurn: player)
+        case .win(let winner):
+            print(winner.turnMessage)
+            try runMukChiBa(whoseTurn: winner)
         case .draw:
             fatalError()
         }
