@@ -35,8 +35,8 @@ enum GameResult: CustomStringConvertible {
     case win(Player)
 }
 
-enum Player: CustomStringConvertible {
-    var description: String {
+enum Player {
+    var turnMessage: String {
         switch self {
         case .user:
             return Message.userTurn
@@ -174,7 +174,7 @@ func runMukChiBa(whoseTurn: Player) throws {
             print(Message.computerFinalWin)
             print(Message.exit)
         case .win(let player):
-            print(gameResult)
+            print(player.turnMessage)
             try runMukChiBa(whoseTurn: player)
         case .draw:
             fatalError()
