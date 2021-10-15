@@ -17,6 +17,7 @@ enum Message {
     static let computerFinalWin = "컴퓨터의 승리!"
     static let userTurn = "사용자의 턴입니다"
     static let computerTurn = "컴퓨터의 턴입니다"
+    static let invalidInput = "잘못된 입력입니다. 다시 시도해주세요."
 }
 
 enum GameResult: CustomStringConvertible {
@@ -71,7 +72,7 @@ enum GameError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .invalidInput:
-            return "잘못된 입력입니다. 다시 시도해주세요."
+            return Message.invalidInput
         }
     }
     
