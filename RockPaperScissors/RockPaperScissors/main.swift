@@ -160,11 +160,9 @@ func runProgram() {
             print(gameResult)
             try runMukChiBa(whoseTurn: winner)
         }
-    } catch GameError.invalidInput {
-        print(GameError.invalidInput)
-        runProgram()
     } catch {
-        fatalError()
+        print(error)
+        runProgram()
     }
 }
 
