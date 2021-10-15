@@ -98,13 +98,13 @@ func readUserInput() throws -> ExpectedHand? {
     switch input {
     case "0":
         return nil
-    case .some(let input):
-        if let userHand: ExpectedHand = ExpectedHand(rawValue: input) {
-            return userHand
-        }
-        throw GameError.invalidInput
     case .none:
         throw GameError.invalidInput
+    case .some(let input):
+        guard let userHand: ExpectedHand = ExpectedHand(rawValue: input) else {
+            throw GameError.invalidInput
+        }
+        return userHand
     }
 }
 
