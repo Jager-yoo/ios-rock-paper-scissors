@@ -45,6 +45,24 @@ enum Player {
         }
     }
     
+    var menuMessage: String {
+        switch self {
+        case .user:
+            return Message.menuUserTurn
+        case .computer:
+            return Message.menuComputerTurn
+        }
+    }
+    
+    var victoryMessage: String {
+        switch self {
+        case .user:
+            return Message.userFinalWin
+        case .computer:
+            return Message.computerFinalWin
+        }
+    }
+    
     case user
     case computer
 }
@@ -151,12 +169,7 @@ func runProgram() {
 }
 
 func runMukChiBa(whoseTurn: Player) throws {
-    switch whoseTurn {
-    case .user:
-        print(Message.menuUserTurn, terminator: "")
-    case .computer:
-        print(Message.menuComputerTurn, terminator: "")
-    }
+    print(whoseTurn.menuMessage, terminator: "")
     
     do {
         guard let mukChiBaInput = try readMukChiBa() else {
@@ -167,17 +180,12 @@ func runMukChiBa(whoseTurn: Player) throws {
         let gameResult = judgeGameResult(mukChiBaInput)
         
         switch gameResult {
-        case .draw where whoseTurn == .user:
-            print(Message.userFinalWin)
-            print(Message.exit)
-        case .draw where whoseTurn == .computer:
-            print(Message.computerFinalWin)
+        case .draw:
+            print(whoseTurn.victoryMessage)
             print(Message.exit)
         case .win(let winner):
             print(winner.turnMessage)
             try runMukChiBa(whoseTurn: winner)
-        case .draw:
-            fatalError()
         }
     } catch GameError.invalidInput {
         print(GameError.invalidInput)
